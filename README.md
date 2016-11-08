@@ -1,5 +1,6 @@
 # simple c++ wrapper on unqlite api
-```
+
+```c++
 #include "UnqliteDatabase.h"
 #include "UnqliteQuery.h"
 
@@ -69,5 +70,4 @@ int main(int argc, char **argv)
     std::cout << "Done..." << std::endl;
     return 0;
 }
-
 ```
