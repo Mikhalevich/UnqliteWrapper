@@ -15,3 +15,8 @@ file(GLOB HEADER_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB SOURCE_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 
 add_library(${ProjectName} STATIC ${HEADER_LIST} ${SOURCE_LIST})
+
+option(BUILD_EXAMPLE "building example executable" ON)
+if (BUILD_EXAMPLE)
+    add_subdirectory(example)
+endif()
