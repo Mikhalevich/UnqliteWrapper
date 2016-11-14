@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     auto stringResult = query.fetchString("StringKey");
     if (!stringResult.second)
     {
-        std::cout << "Unable fetch string valud: " << query.lastError() << std::endl;
+        std::cout << "Unable fetch string value: " << query.lastError() << std::endl;
         return 1;
     }
     std::cout << "Fetched string value: " << stringResult.first << std::endl;
