@@ -1,8 +1,7 @@
 #include "UnqliteQuery.h"
 
-#include "boost/format.hpp"
-
 #include <cstdlib>
+#include <sstream>
 
 UnqliteQuery::UnqliteQuery(const UnqliteDatabase &database)
     : m_database(database)
@@ -96,15 +95,13 @@ bool UnqliteQuery::removeValue(const std::string &key)
 bool UnqliteQuery::storeDocument(const std::string &collection,
                                  const std::string &document)
 {
-    std::string checkCollectionTemplate("if (!db_exists('%s')) {"
-                                            "db_create('%s');"
-                                        "}");
-    auto checkCollection = boost::format(checkCollectionTemplate) % collection % collection;
-    std::string documentTemplate("%s db_store('%s', %s);");
-    auto storeDocument = boost::format(documentTemplate) % checkCollection % collection % document;
+    std::ostringstream oss;
+    oss << "if (!db_exists('" << collection << "')) {"
+        << "db_create('" << collection << "'); }"
+        << " db_store('" << collection << "', " << document << ");";
 
     unqlite_vm *vmResult;
-    auto result = unqlite_compile(m_database.handler(), storeDocument.str().c_str(), -1, &vmResult);
+    auto result = unqlite_compile(m_database.handler(), oss.str().c_str(), -1, &vmResult);
 
     if (result != UNQLITE_OK)
     {
@@ -128,16 +125,17 @@ std::pair<std::string, bool> UnqliteQuery::fetchDocument(const std::string &coll
 {
     std::pair<std::string, bool> output(std::string(), false);
 
-    std::string documentTemplate("$result = db_fetch_all('%s' %s %s);");
     auto comma = "";
     if (!filter.empty())
     {
         comma = ",";
     }
-    auto storeDocument = (boost::format(documentTemplate) % collection % comma % filter).str();
+
+    std::ostringstream oss;
+    oss << "$result = db_fetch_all('" << collection << "' " << comma << filter << ");";
 
     unqlite_vm *vmResult;
-    auto result = unqlite_compile(m_database.handler(), storeDocument.c_str(), -1, &vmResult);
+    auto result = unqlite_compile(m_database.handler(), oss.str().c_str(), -1, &vmResult);
 
     if (result != UNQLITE_OK)
     {

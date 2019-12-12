@@ -23,15 +23,6 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/unqlite)
 file(GLOB HEADER_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h)
 file(GLOB SOURCE_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/unqlite/unqlite.c)
 
-set(BOOST_ROOT_HINT "${BOOST_ROOT_HINT}" CACHE PATH "Boost path hint" FORCE)
-set(BOOST_ROOT "${BOOST_ROOT_HINT}")
-find_package(Boost 1.45.0 REQUIRED)
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost not found")
-endif()
-
-include_directories(${Boost_INCLUDE_DIRS})
-
 add_library(${ProjectName} STATIC ${HEADER_LIST} ${SOURCE_LIST})
 target_link_libraries(${ProjectName} ${EXTERNAL_LINK_LIBRARIES})
 
