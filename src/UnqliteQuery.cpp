@@ -193,6 +193,8 @@ bool UnqliteQuery::rollback()
         m_activeTransaction = false;
         return true;
     }
+
+    return false;
 }
 
 std::string UnqliteQuery::lastError() const
