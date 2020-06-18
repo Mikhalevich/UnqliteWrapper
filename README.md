@@ -1,9 +1,8 @@
 # simple c++ wrapper on unqlite api
 ### how to build on linux
 ```bash
-git clone git@github.com:Mikhalevich/UnqliteWrapper.git
+git clone --recursive https://github.com/Mikhalevich/UnqliteWrapper.git
 cd UnqliteWrapper/
-git submodule update --recursive --init
 mkdir build/
 cd build/
 cmake -G "Unix Makefiles" ../
